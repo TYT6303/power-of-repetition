@@ -1,18 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<!-- PWA 清单引用 -->
-<link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#6c5ce7">
-<!-- iOS 兼容：添加到主屏幕 -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="重复的力量">
-<link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>重复的力量 - 语言学习工具</title>
     <link href="https://cdn.jsdelivr.net/npm/fontsource@5.0.1/fonts/inter/standard.css" rel="stylesheet">
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#6c5ce7">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="重复的力量">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
     <style>
         * {
             margin: 0;
@@ -136,10 +134,12 @@
         .input-group {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .input-group input {
             flex: 1;
+            min-width: 200px;
             padding: 14px 18px;
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -265,11 +265,24 @@
             padding: 24px;
             margin-bottom: 16px;
             animation: slideIn 0.4s ease;
+            position: relative;
         }
 
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        .scene-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: rgba(108,92,231,0.15);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--primary-light);
+            margin-bottom: 8px;
         }
 
         .sentence-text {
@@ -492,17 +505,6 @@
             background: rgba(255, 107, 107, 0.1);
         }
 
-        .sentence-card {
-            position: relative;
-        }
-
-        .fill-blank {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 16px 0;
-        }
-
         .word-chip {
             padding: 8px 14px;
             border: 1px solid var(--border);
@@ -523,29 +525,6 @@
             border-color: var(--primary);
             background: rgba(108, 92, 231, 0.2);
             color: var(--primary-light);
-        }
-
-        .blank-slot {
-            display: inline-flex;
-            align-items: center;
-            min-width: 80px;
-            padding: 6px 12px;
-            border-bottom: 2px dashed var(--primary);
-            color: var(--primary-light);
-            font-weight: 600;
-        }
-
-        .streak-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 4px 10px;
-            background: rgba(253, 203, 110, 0.15);
-            border: 1px solid rgba(253, 203, 110, 0.3);
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--warning);
-            margin-left: 10px;
         }
 
         .speed-control {
@@ -599,16 +578,6 @@
     </style>
 </head>
 <body>
-<!-- 注册 Service Worker -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('✅ PWA 引擎已启动:', reg.scope))
-        .catch(err => console.warn('⚠️ SW 注册失败:', err));
-    });
-  }
-</script>
     <div class="hero">
         <h1>🔁 重复的力量</h1>
         <p>重复听 • 重复说 • 重复用 —— 语言学习最有效的获能行为</p>
@@ -635,11 +604,32 @@
             <div class="input-group">
                 <input type="text" id="sentenceInput" placeholder="输入要练习的句子或单词..." />
                 <input type="text" id="translationInput" placeholder="翻译/注释（可选）" style="max-width: 200px;" />
+            </div>
+            <div style="margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <select id="sceneSelect" style="padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.9rem; outline: none;">
+                    <option value="">选择场景（可选）</option>
+                    <option value="健身Scene">💪 健身Scene</option>
+                    <option value="点菜Scene">🍽️ 点菜Scene</option>
+                    <option value="问路Scene">🗺️ 问路Scene</option>
+                    <option value="八卦Scene">💬 八卦Scene</option>
+                    <option value="咖啡Scene">☕ 咖啡Scene</option>
+                    <option value="寒暄Scene">👋 寒暄Scene</option>
+                    <option value="网购Scene">🛒 网购Scene</option>
+                    <option value="郊游Scene">🌳 郊游Scene</option>
+                    <option value="驾车Scene">🚗 驾车Scene</option>
+                    <option value="游泳Scene">🏊 游泳Scene</option>
+                </select>
                 <button class="btn btn-primary" onclick="addSentence()">添加</button>
             </div>
             <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
                 <button class="btn btn-small" style="background: rgba(108,92,231,0.15); color: var(--primary-light);" onclick="loadSample()">加载示例</button>
+                <button class="btn btn-small" style="background: rgba(0,184,148,0.15); color: var(--success);" onclick="exportData()">📥 导出备份</button>
+                <button class="btn btn-small" style="background: rgba(253,203,110,0.15); color: var(--warning);" onclick="importData()">📤 导入恢复</button>
                 <button class="btn btn-small" style="background: rgba(253,121,168,0.15); color: var(--accent);" onclick="clearAll()">清空全部</button>
+            </div>
+            <div id="sceneFilter" style="margin-top: 16px; display: none;">
+                <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px;">📂 按场景筛选：</div>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="sceneTags"></div>
             </div>
         </div>
 
@@ -663,10 +653,12 @@
         let sentences = JSON.parse(localStorage.getItem('repeatSentences') || '[]');
         let currentTab = 'listen';
         let speechRate = 1;
+        window.currentSceneFilter = '';
 
         function saveData() {
             localStorage.setItem('repeatSentences', JSON.stringify(sentences));
             updateStats();
+            renderSceneFilter();
         }
 
         function updateStats() {
@@ -680,6 +672,7 @@
         function addSentence() {
             const input = document.getElementById('sentenceInput');
             const transInput = document.getElementById('translationInput');
+            const sceneSelect = document.getElementById('sceneSelect');
             const text = input.value.trim();
             if (!text) return;
 
@@ -687,23 +680,25 @@
                 id: Date.now(),
                 text: text,
                 translation: transInput.value.trim() || '',
+                scene: sceneSelect.value || '',
                 repeatCount: 0,
                 maxRepeats: 5
             });
 
             input.value = '';
             transInput.value = '';
+            sceneSelect.value = '';
             saveData();
             renderPractice();
         }
 
         function loadSample() {
             const samples = [
-                { text: "Practice makes perfect.", translation: "熟能生巧。" },
-                { text: "Actions speak louder than words.", translation: "行动胜于言语。" },
-                { text: "Where there is a will, there is a way.", translation: "有志者事竟成。" },
-                { text: "Every cloud has a silver lining.", translation: "黑暗中总有一线光明。" },
-                { text: "The early bird catches the worm.", translation: "早起的鸟儿有虫吃。" }
+                { text: "I'd like a table for two, please.", translation: "请给我安排一张两人桌。", scene: "点菜Scene" },
+                { text: "Could you recommend the signature dish?", translation: "能推荐一下招牌菜吗？", scene: "点菜Scene" },
+                { text: "Excuse me, how do I get to the nearest subway station?", translation: "请问最近的地铁站怎么走？", scene: "问路Scene" },
+                { text: "Let's grab a coffee sometime.", translation: "找个时间一起喝咖啡吧。", scene: "咖啡Scene" },
+                { text: "How's it going?", translation: "最近怎么样？", scene: "寒暄Scene" }
             ];
 
             samples.forEach(s => {
@@ -711,6 +706,7 @@
                     id: Date.now() + Math.random(),
                     text: s.text,
                     translation: s.translation,
+                    scene: s.scene || '',
                     repeatCount: 0,
                     maxRepeats: 5
                 });
@@ -743,14 +739,53 @@
             renderPractice();
         }
 
+        function renderSceneFilter() {
+            const scenes = [...new Set(sentences.map(s => s.scene).filter(Boolean))];
+            const filterDiv = document.getElementById('sceneFilter');
+            const tagsDiv = document.getElementById('sceneTags');
+            
+            if (scenes.length === 0) {
+                filterDiv.style.display = 'none';
+                return;
+            }
+            
+            filterDiv.style.display = 'block';
+            tagsDiv.innerHTML = `
+                <button class="word-chip ${!window.currentSceneFilter ? 'selected' : ''}" 
+                        onclick="filterByScene('')">
+                    全部 (${sentences.length})
+                </button>
+            `;
+            
+            scenes.forEach(scene => {
+                const count = sentences.filter(s => s.scene === scene).length;
+                tagsDiv.innerHTML += `
+                    <button class="word-chip ${window.currentSceneFilter === scene ? 'selected' : ''}" 
+                            onclick="filterByScene('${scene}')">
+                        ${scene} (${count})
+                    </button>
+                `;
+            });
+        }
+
+        function filterByScene(scene) {
+            window.currentSceneFilter = scene;
+            renderSceneFilter();
+            renderPractice();
+        }
+
         function renderPractice() {
             const area = document.getElementById('practiceArea');
+            
+            const filteredSentences = window.currentSceneFilter 
+                ? sentences.filter(s => s.scene === window.currentSceneFilter)
+                : sentences;
 
-            if (sentences.length === 0) {
+            if (filteredSentences.length === 0) {
                 area.innerHTML = `
                     <div class="empty-state">
                         <div class="icon">📝</div>
-                        <p>添加句子或单词开始练习吧</p>
+                        <p>${sentences.length === 0 ? '添加句子或单词开始练习吧' : '该场景下暂无内容'}</p>
                     </div>
                 `;
                 return;
@@ -769,11 +804,12 @@
                     <span class="speed-value" id="speedValue">${speechRate}x</span>
                 </div>`;
 
-                sentences.forEach((s, idx) => {
+                filteredSentences.forEach((s) => {
                     const dots = generateDots(s);
                     html += `
                         <div class="sentence-card">
                             <button class="delete-btn" onclick="deleteSentence(${s.id})">✕</button>
+                            ${s.scene ? `<div class="scene-tag">📂 ${s.scene}</div>` : ''}
                             <div class="sentence-text">${s.text}</div>
                             ${s.translation ? `<div class="sentence-translation">${s.translation}</div>` : ''}
                             <div class="progress-dots">${dots}</div>
@@ -801,11 +837,12 @@
                     <div class="mode-text"><strong>重复说</strong> — 让嘴巴记住每一组发音</div>
                 </div>`;
 
-                sentences.forEach((s) => {
+                filteredSentences.forEach((s) => {
                     const dots = generateDots(s);
                     html += `
                         <div class="sentence-card">
                             <button class="delete-btn" onclick="deleteSentence(${s.id})">✕</button>
+                            ${s.scene ? `<div class="scene-tag">📂 ${s.scene}</div>` : ''}
                             <div class="sentence-text">${s.text}</div>
                             <div class="progress-dots">${dots}</div>
                             <div class="action-buttons">
@@ -832,11 +869,12 @@
                     <div class="mode-text"><strong>重复用</strong> — 让大脑内化每一个表达</div>
                 </div>`;
 
-                sentences.forEach((s) => {
+                filteredSentences.forEach((s) => {
                     const dots = generateDots(s);
                     html += `
                         <div class="sentence-card">
                             <button class="delete-btn" onclick="deleteSentence(${s.id})">✕</button>
+                            ${s.scene ? `<div class="scene-tag">📂 ${s.scene}</div>` : ''}
                             <div class="sentence-text">${s.text}</div>
                             ${s.translation ? `<div class="sentence-translation">${s.translation}</div>` : ''}
                             <div class="progress-dots">${dots}</div>
@@ -1100,13 +1138,81 @@
             return 'en-US';
         }
 
+        function exportData() {
+            if (sentences.length === 0) {
+                alert('当前没有学习内容，无法导出！');
+                return;
+            }
+            const dataStr = JSON.stringify(sentences, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const date = new Date().toISOString().slice(0, 10);
+            a.download = `重复的力量_语料备份_${date}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importData() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json,application/json';
+            input.style.display = 'none';
+            
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const imported = JSON.parse(event.target.result);
+                        if (!Array.isArray(imported)) throw new Error('格式不是数组');
+                        
+                        const isValid = imported.every(item => item.text && typeof item.id === 'number');
+                        if (!isValid) throw new Error('数据结构不匹配');
+
+                        if (confirm(`检测到 ${imported.length} 条语料。\n点击【确定】覆盖当前数据\n点击【取消】追加到现有列表`)) {
+                            sentences = imported;
+                        } else {
+                            const existingIds = new Set(sentences.map(s => s.id));
+                            const newItems = imported.filter(item => !existingIds.has(item.id));
+                            sentences = sentences.concat(newItems);
+                        }
+                        
+                        saveData();
+                        renderPractice();
+                        alert(`✅ 成功导入 ${imported.length} 条语料！`);
+                    } catch (err) {
+                        alert('❌ 导入失败：文件格式不正确或已损坏。\n' + err.message);
+                    }
+                };
+                reader.readAsText(file);
+            };
+            
+            document.body.appendChild(input);
+            input.click();
+            document.body.removeChild(input);
+        }
+
         document.getElementById('sentenceInput').addEventListener('keydown', function(e) {
             if (e.key === 'Enter') addSentence();
         });
 
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('✅ PWA 引擎已启动:', reg.scope))
+                    .catch(err => console.warn('⚠️ SW 注册失败:', err));
+            });
+        }
+
         updateStats();
+        renderSceneFilter();
         renderPractice();
     </script>
 </body>
 </html>
-

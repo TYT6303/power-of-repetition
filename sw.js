@@ -1,5 +1,5 @@
 // sw.js - Service Worker for "重复的力量"
-const CACHE_NAME = 'repeat-power-v1';
+const CACHE_NAME = 'repeat-power-v2';
 const CORE_ASSETS = [
   './',
   './index.html',

@@ -3,14 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>重复的力量 - 语言学习工具</title>
-    <link href="https://cdn.jsdelivr.net/npm/fontsource@5.0.1/fonts/inter/standard.css" rel="stylesheet">
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#6c5ce7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="重复的力量">
-    <link rel="apple-touch-icon" href="assets/icons/icon-192x192.png">
+    <title>重复的力量 - 模仿造句拓展模块</title>
     <style>
         * {
             margin: 0;
@@ -19,77 +12,96 @@
         }
 
         :root {
-            --bg: #0f1117;
-            --card: #1a1d27;
-            --card-hover: #232733;
-            --primary: #6c5ce7;
+            --bg-dark: #1a1b2e;
+            --bg-card: #252640;
+            --bg-input: #1e1f33;
+            --primary: #7c6fff;
             --primary-light: #a29bfe;
-            --accent: #fd79a8;
-            --success: #00b894;
-            --warning: #fdcb6e;
-            --text: #f5f5f7;
-            --text-secondary: #8b8fa3;
-            --border: #2d3040;
-            --glow: rgba(108, 92, 231, 0.3);
+            --accent: #ff6b9d;
+            --accent-light: #ff8fb1;
+            --success: #00d2a0;
+            --warning: #ffb347;
+            --text: #ffffff;
+            --text-secondary: #8b90a8;
+            --border: #333455;
+            --gradient-1: linear-gradient(135deg, #7c6fff, #ff6b9d);
+            --gradient-2: linear-gradient(135deg, #00d2a0, #7c6fff);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: var(--bg-dark);
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        .hero {
-            position: relative;
-            padding: 60px 20px 40px;
-            text-align: center;
-            overflow: hidden;
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        .hero::before {
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .header::before {
             content: '';
             position: absolute;
             top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(ellipse at center, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
-            animation: pulseBg 8s ease-in-out infinite;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(124, 111, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        @keyframes pulseBg {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-
-        .hero h1 {
-            position: relative;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            background: linear-gradient(135deg, #6c5ce7, #fd79a8, #fdcb6e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 12px;
         }
 
-        .hero p {
-            position: relative;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
         }
 
-        .stats-bar {
+        .logo-text {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        /* Stats */
+        .stats {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 40px;
+            margin: 30px 0;
             padding: 20px;
-            margin: 0 auto 20px;
-            max-width: 600px;
         }
 
         .stat-item {
@@ -98,42 +110,43 @@
 
         .stat-num {
             font-size: 2rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--primary-light);
         }
 
         .stat-label {
             font-size: 0.8rem;
             color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin-top: 4px;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 20px 40px;
-        }
-
-        .add-section {
-            background: var(--card);
-            border: 1px solid var(--border);
+        /* Card */
+        .card {
+            background: var(--bg-card);
             border-radius: 20px;
             padding: 24px;
             margin-bottom: 24px;
+            border: 1px solid var(--border);
         }
 
-        .add-section h3 {
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
             margin-bottom: 16px;
-            color: var(--primary-light);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
+        .card-title .icon {
+            font-size: 1.2rem;
+        }
+
+        /* Input */
         .input-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            margin-bottom: 16px;
             flex-wrap: wrap;
         }
 
@@ -141,29 +154,30 @@
             flex: 1;
             min-width: 200px;
             padding: 14px 18px;
+            background: var(--bg-input);
             border: 1px solid var(--border);
             border-radius: 12px;
-            background: var(--bg);
             color: var(--text);
-            font-size: 1rem;
+            font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
         .input-group input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--glow);
+            box-shadow: 0 0 0 3px rgba(124, 111, 255, 0.2);
         }
 
         .input-group input::placeholder {
             color: var(--text-secondary);
         }
 
+        /* Buttons */
         .btn {
-            padding: 14px 24px;
+            padding: 12px 24px;
             border: none;
             border-radius: 12px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -173,28 +187,43 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            background: var(--gradient-1);
             color: white;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px var(--glow);
+            box-shadow: 0 6px 20px rgba(124, 111, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(124, 111, 255, 0.15);
+            color: var(--primary-light);
+            border: 1px solid rgba(124, 111, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(124, 111, 255, 0.25);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #00b894, #00cec9);
-            color: white;
+            background: rgba(0, 210, 160, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(0, 210, 160, 0.3);
         }
 
-        .btn-warning {
-            background: linear-gradient(135deg, #fdcb6e, #e17055);
-            color: white;
+        .btn-success:hover {
+            background: rgba(0, 210, 160, 0.25);
         }
 
         .btn-accent {
-            background: linear-gradient(135deg, #fd79a8, #e84393);
-            color: white;
+            background: rgba(255, 107, 157, 0.15);
+            color: var(--accent-light);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+        }
+
+        .btn-accent:hover {
+            background: rgba(255, 107, 157, 0.25);
         }
 
         .btn-small {
@@ -203,13 +232,20 @@
             border-radius: 8px;
         }
 
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Tabs */
         .tabs {
             display: flex;
             gap: 4px;
-            background: var(--card);
+            background: var(--bg-input);
             border-radius: 14px;
             padding: 4px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             border: 1px solid var(--border);
         }
 
@@ -230,22 +266,186 @@
         .tab.active {
             background: var(--primary);
             color: white;
-            box-shadow: 0 2px 10px var(--glow);
+            box-shadow: 0 4px 12px rgba(124, 111, 255, 0.3);
         }
 
         .tab:hover:not(.active) {
             color: var(--text);
-            background: var(--card-hover);
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .practice-area {
-            background: var(--card);
+        /* Sentence Card */
+        .sentence-card {
+            background: var(--bg-input);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
             border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
-            min-height: 300px;
+            position: relative;
         }
 
+        .sentence-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .sentence-translation {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+
+        .sentence-scene {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(124, 111, 255, 0.15);
+            color: var(--primary-light);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            margin-bottom: 12px;
+        }
+
+        /* Progress Dots */
+        .progress-dots {
+            display: flex;
+            gap: 6px;
+            margin: 12px 0;
+        }
+
+        .progress-dot {
+            width: 24px;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            transition: all 0.3s;
+        }
+
+        .progress-dot.filled {
+            background: var(--gradient-1);
+            box-shadow: 0 0 8px rgba(124, 111, 255, 0.4);
+        }
+
+        .progress-dot.completed {
+            background: var(--success);
+            box-shadow: 0 0 8px rgba(0, 210, 160, 0.4);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .action-btn {
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary);
+            background: rgba(124, 111, 255, 0.1);
+        }
+
+        /* Speaking Indicator */
+        .speaking-indicator {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 10px 16px;
+            background: rgba(124, 111, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .speaking-indicator.active {
+            display: flex;
+        }
+
+        .sound-wave {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .sound-bar {
+            width: 4px;
+            height: 20px;
+            background: var(--primary-light);
+            border-radius: 2px;
+            animation: soundWave 0.8s ease-in-out infinite;
+        }
+
+        .sound-bar:nth-child(1) { animation-delay: 0s; height: 12px; }
+        .sound-bar:nth-child(2) { animation-delay: 0.1s; height: 20px; }
+        .sound-bar:nth-child(3) { animation-delay: 0.2s; height: 14px; }
+        .sound-bar:nth-child(4) { animation-delay: 0.3s; height: 24px; }
+        .sound-bar:nth-child(5) { animation-delay: 0.4s; height: 16px; }
+
+        @keyframes soundWave {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1.2); }
+        }
+
+        /* Result Box */
+        .result-box {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 12px;
+            background: rgba(0, 210, 160, 0.1);
+            border: 1px solid rgba(0, 210, 160, 0.3);
+        }
+
+        .result-box.error {
+            background: rgba(255, 107, 157, 0.1);
+            border-color: rgba(255, 107, 157, 0.3);
+        }
+
+        .result-label {
+            font-size: 0.8rem;
+            color: var(--success);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .result-box.error .result-label {
+            color: var(--accent-light);
+        }
+
+        /* Practice Input */
+        .practice-input {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--bg-input);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+            margin-top: 16px;
+        }
+
+        .practice-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 111, 255, 0.2);
+        }
+
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -258,183 +458,390 @@
             opacity: 0.5;
         }
 
-        .sentence-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 16px;
-            animation: slideIn 0.4s ease;
-            position: relative;
+        /* Expand Section */
+        .expand-section {
+            display: none;
+            animation: slideUp 0.4s ease;
         }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
+        .expand-section.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .scene-tag {
-            display: inline-flex;
+        .expand-header {
+            display: flex;
             align-items: center;
-            gap: 4px;
-            padding: 4px 10px;
-            background: rgba(108,92,231,0.15);
-            border-radius: 12px;
-            font-size: 0.8rem;
-            color: var(--primary-light);
-            margin-bottom: 8px;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
 
-        .sentence-text {
+        .expand-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .expand-badge {
+            padding: 4px 12px;
+            background: var(--gradient-1);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Sentence Structure Display */
+        .structure-display {
+            background: var(--bg-input);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .structure-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .structure-sentence {
             font-size: 1.4rem;
             font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .word-highlight {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin: 0 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .word-subject {
+            background: rgba(124, 111, 255, 0.2);
+            border: 1px solid rgba(124, 111, 255, 0.4);
+            color: var(--primary-light);
+        }
+
+        .word-verb {
+            background: rgba(0, 210, 160, 0.2);
+            border: 1px solid rgba(0, 210, 160, 0.4);
+            color: var(--success);
+        }
+
+        .word-object {
+            background: rgba(255, 107, 157, 0.2);
+            border: 1px solid rgba(255, 107, 157, 0.4);
+            color: var(--accent-light);
+        }
+
+        .structure-legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 4px;
+        }
+
+        .legend-dot.subject { background: var(--primary); }
+        .legend-dot.verb { background: var(--success); }
+        .legend-dot.object { background: var(--accent); }
+
+        /* Word Bank */
+        .word-bank {
+            background: var(--bg-input);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .word-bank-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .word-group {
+            margin-bottom: 16px;
+        }
+
+        .word-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .word-group-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .word-chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .word-chip {
+            padding: 10px 16px;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .word-chip:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .word-chip.selected {
+            border-color: var(--primary);
+            background: rgba(124, 111, 255, 0.2);
+            color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(124, 111, 255, 0.3);
+        }
+
+        .word-chip.subject-chip:hover,
+        .word-chip.subject-chip.selected {
+            border-color: var(--primary);
+            background: rgba(124, 111, 255, 0.2);
+        }
+
+        .word-chip.verb-chip:hover,
+        .word-chip.verb-chip.selected {
+            border-color: var(--success);
+            background: rgba(0, 210, 160, 0.2);
+        }
+
+        .word-chip.object-chip:hover,
+        .word-chip.object-chip.selected {
+            border-color: var(--accent);
+            background: rgba(255, 107, 157, 0.2);
+        }
+
+        /* Sentence Builder */
+        .sentence-builder {
+            background: var(--bg-input);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+            min-height: 100px;
+        }
+
+        .builder-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .builder-area {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            min-height: 50px;
+            padding: 12px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            border: 2px dashed var(--border);
+            transition: all 0.3s;
+        }
+
+        .builder-area.has-content {
+            border-style: solid;
+            border-color: var(--primary);
+        }
+
+        .builder-slot {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .builder-slot.subject {
+            background: rgba(124, 111, 255, 0.2);
+            border: 1px solid rgba(124, 111, 255, 0.4);
+            color: var(--primary-light);
+        }
+
+        .builder-slot.verb {
+            background: rgba(0, 210, 160, 0.2);
+            border: 1px solid rgba(0, 210, 160, 0.4);
+            color: var(--success);
+        }
+
+        .builder-slot.object {
+            background: rgba(255, 107, 157, 0.2);
+            border: 1px solid rgba(255, 107, 157, 0.4);
+            color: var(--accent-light);
+        }
+
+        .builder-placeholder {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .builder-connector {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        /* Generated Sentence */
+        .generated-sentence {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 4px 20px rgba(124, 111, 255, 0.2);
+        }
+
+        .generated-label {
+            font-size: 0.85rem;
+            color: var(--primary-light);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .generated-text {
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 12px;
             line-height: 1.5;
         }
 
-        .sentence-translation {
+        .generated-translation {
             color: var(--text-secondary);
             font-size: 0.95rem;
-            margin-bottom: 16px;
             font-style: italic;
         }
 
-        .progress-dots {
+        /* Action Area */
+        .action-area {
             display: flex;
-            gap: 6px;
-            margin-bottom: 16px;
-        }
-
-        .progress-dot {
-            width: 28px;
-            height: 6px;
-            border-radius: 3px;
-            background: var(--border);
-            transition: all 0.3s;
-        }
-
-        .progress-dot.filled {
-            background: linear-gradient(90deg, #6c5ce7, #a29bfe);
-            box-shadow: 0 0 6px var(--glow);
-        }
-
-        .progress-dot.completed {
-            background: linear-gradient(90deg, #00b894, #00cec9);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
-        }
-
-        .action-btn {
-            padding: 10px 18px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: var(--card);
-            color: var(--text);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .action-btn:hover {
-            border-color: var(--primary);
-            background: var(--card-hover);
-            transform: translateY(-1px);
-        }
-
-        .action-btn.active {
-            border-color: var(--primary);
-            background: rgba(108, 92, 231, 0.15);
-            color: var(--primary-light);
-        }
-
-        .speaking-indicator {
-            display: none;
-            align-items: center;
-            gap: 4px;
-            margin-top: 12px;
-        }
-
-        .speaking-indicator.active {
-            display: flex;
-        }
-
-        .sound-wave {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-        }
-
-        .sound-bar {
-            width: 4px;
-            height: 20px;
-            background: var(--primary-light);
-            border-radius: 2px;
-            animation: soundWave 0.8s ease-in-out infinite;
-        }
-
-        .sound-bar:nth-child(1) { animation-delay: 0s; height: 10px; }
-        .sound-bar:nth-child(2) { animation-delay: 0.1s; height: 18px; }
-        .sound-bar:nth-child(3) { animation-delay: 0.2s; height: 14px; }
-        .sound-bar:nth-child(4) { animation-delay: 0.3s; height: 22px; }
-        .sound-bar:nth-child(5) { animation-delay: 0.4s; height: 12px; }
-
-        @keyframes soundWave {
-            0%, 100% { transform: scaleY(0.5); }
-            50% { transform: scaleY(1.2); }
-        }
-
-        .result-box {
             margin-top: 16px;
-            padding: 16px;
-            border-radius: 12px;
-            background: rgba(0, 184, 148, 0.1);
-            border: 1px solid rgba(0, 184, 148, 0.3);
         }
 
-        .result-box .label {
-            font-size: 0.8rem;
-            color: var(--success);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
+        /* Score Display */
+        .score-display {
+            text-align: center;
+            padding: 20px;
+            background: var(--bg-input);
+            border-radius: 16px;
+            margin-top: 16px;
         }
 
-        .result-box .match {
-            font-size: 1.2rem;
-            font-weight: 600;
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 auto 12px;
+            background: var(--gradient-1);
+            box-shadow: 0 4px 20px rgba(124, 111, 255, 0.4);
         }
 
-        .result-box .accuracy {
-            margin-top: 8px;
+        .score-label {
             color: var(--text-secondary);
             font-size: 0.9rem;
         }
 
-        .practice-input {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            background: var(--bg);
-            color: var(--text);
-            font-size: 1.1rem;
-            outline: none;
+        /* Scene Selector */
+        .scene-selector {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .scene-btn {
+            padding: 8px 16px;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
             transition: all 0.3s;
-            margin-top: 16px;
         }
 
-        .practice-input:focus {
+        .scene-btn.active {
+            background: rgba(124, 111, 255, 0.2);
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px var(--glow);
+            color: var(--primary-light);
         }
 
+        .scene-btn:hover:not(.active) {
+            border-color: var(--text-secondary);
+            color: var(--text);
+        }
+
+        /* Delete Button */
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            color: var(--accent);
+            background: rgba(255, 107, 157, 0.1);
+        }
+
+        /* Celebration */
         .celebration {
             position: fixed;
             top: 0;
@@ -458,252 +865,599 @@
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
 
-        .mode-visual {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-            margin-bottom: 20px;
-        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 12px;
+            }
 
-        .mode-emoji {
-            font-size: 3rem;
-            margin-right: 16px;
-            animation: bounce 2s ease infinite;
-        }
+            .header {
+                padding: 30px 0 20px;
+            }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+            .logo-text {
+                font-size: 1.5rem;
+            }
 
-        .mode-text {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-        }
+            .stats {
+                gap: 24px;
+            }
 
-        .mode-text strong {
-            color: var(--text);
-        }
+            .stat-num {
+                font-size: 1.5rem;
+            }
 
-        .delete-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 1.2rem;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: all 0.3s;
-        }
+            .card {
+                padding: 16px;
+            }
 
-        .delete-btn:hover {
-            color: #ff6b6b;
-            background: rgba(255, 107, 107, 0.1);
-        }
+            .sentence-text {
+                font-size: 1.1rem;
+            }
 
-        .word-chip {
-            padding: 8px 14px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--card);
-            color: var(--text);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-        }
+            .structure-sentence {
+                font-size: 1.2rem;
+            }
 
-        .word-chip:hover {
-            border-color: var(--primary);
-            background: rgba(108, 92, 231, 0.1);
-        }
+            .generated-text {
+                font-size: 1.2rem;
+            }
 
-        .word-chip.selected {
-            border-color: var(--primary);
-            background: rgba(108, 92, 231, 0.2);
-            color: var(--primary-light);
-        }
-
-        .speed-control {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .speed-control label {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .speed-slider {
-            flex: 1;
-            -webkit-appearance: none;
-            height: 4px;
-            border-radius: 2px;
-            background: var(--border);
-            outline: none;
-        }
-
-        .speed-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-        }
-
-        .speed-value {
-            color: var(--primary-light);
-            font-size: 0.85rem;
-            min-width: 35px;
-            text-align: center;
-        }
-
-        @media (max-width: 600px) {
             .input-group {
                 flex-direction: column;
             }
-            .action-buttons {
+
+            .input-group input {
+                min-width: 100%;
+            }
+
+            .btn-group {
+                width: 100%;
+            }
+
+            .btn-group .btn {
+                flex: 1;
                 justify-content: center;
             }
-            .stats-bar {
-                gap: 20px;
-            }
+        }
+
+        /* Expand Tab Styles */
+        .expand-tabs {
+            display: flex;
+            gap: 4px;
+            background: var(--bg-input);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .expand-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .expand-tab.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+
+        .expand-tab:hover:not(.active) {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .expand-content {
+            display: none;
+        }
+
+        .expand-content.active {
+            display: block;
+            animation: fadeUp 0.4s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Sentence List */
+        .sentence-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .sentence-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sentence-list::-webkit-scrollbar-track {
+            background: var(--bg-input);
+            border-radius: 3px;
+        }
+
+        .sentence-list::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <h1>🔁 重复的力量</h1>
-        <p>重复听 • 重复说 • 重复用 —— 语言学习最有效的获能行为</p>
-    </div>
-
-    <div class="stats-bar">
-        <div class="stat-item">
-            <div class="stat-num" id="totalWords">0</div>
-            <div class="stat-label">学习条目</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-num" id="totalRepeats">0</div>
-            <div class="stat-label">总重复次数</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-num" id="completed">0</div>
-            <div class="stat-label">已掌握</div>
-        </div>
-    </div>
-
     <div class="container">
-        <div class="add-section">
-            <h3>➕ 添加学习内容</h3>
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">🔁</div>
+                <div class="logo-text">重复的力量</div>
+            </div>
+            <p class="subtitle">重复听 · 重复说 · 重复用 —— 语言学习最有效的获能行为</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-num" id="statTotal">0</div>
+                <div class="stat-label">学习条目</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" id="statRepeats">0</div>
+                <div class="stat-label">总重复次数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num" id="statMastered">0</div>
+                <div class="stat-label">已掌握</div>
+            </div>
+        </div>
+
+        <!-- Add Section -->
+        <div class="card">
+            <div class="card-title">
+                <span class="icon">➕</span>
+                添加学习内容
+            </div>
             <div class="input-group">
                 <input type="text" id="sentenceInput" placeholder="输入要练习的句子或单词..." />
-                <input type="text" id="translationInput" placeholder="翻译/注释（可选）" style="max-width: 200px;" />
+                <input type="text" id="translationInput" placeholder="翻译/注释（可选）" />
             </div>
-            <div style="margin-top: 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                <select id="sceneSelect" style="padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-size: 0.9rem; outline: none;">
+            <div class="input-group">
+                <select id="sceneSelect" style="padding: 14px 18px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-size: 0.95rem; outline: none; flex: 1;">
                     <option value="">选择场景（可选）</option>
-                    <option value="健身Scene">💪 健身Scene</option>
-                    <option value="点菜Scene">🍽️ 点菜Scene</option>
-                    <option value="问路Scene">🗺️ 问路Scene</option>
-                    <option value="八卦Scene">💬 八卦Scene</option>
-                    <option value="咖啡Scene">☕ 咖啡Scene</option>
-                    <option value="寒暄Scene">👋 寒暄Scene</option>
-                    <option value="网购Scene">🛒 网购Scene</option>
-                    <option value="郊游Scene">🌳 郊游Scene</option>
-                    <option value="驾车Scene">🚗 驾车Scene</option>
-                    <option value="游泳Scene">🏊 游泳Scene</option>
+                    <option value="日常">日常</option>
+                    <option value="商务">商务</option>
+                    <option value="学术">学术</option>
+                    <option value="旅行">旅行</option>
                 </select>
                 <button class="btn btn-primary" onclick="addSentence()">添加</button>
             </div>
-            <div style="margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap;">
-                <button class="btn btn-small" style="background: rgba(108,92,231,0.15); color: var(--primary-light);" onclick="loadSample()">加载示例</button>
-                <button class="btn btn-small" style="background: rgba(0,184,148,0.15); color: var(--success);" onclick="exportData()">📥 导出备份</button>
-                <button class="btn btn-small" style="background: rgba(253,203,110,0.15); color: var(--warning);" onclick="importData()">📤 导入恢复</button>
-                <button class="btn btn-small" style="background: rgba(253,121,168,0.15); color: var(--accent);" onclick="clearAll()">清空全部</button>
+            <div class="btn-group">
+                <button class="btn btn-small btn-secondary" onclick="loadSamples()">加载示例</button>
+                <button class="btn btn-small btn-success" onclick="exportData()">📤 导出备份</button>
+                <button class="btn btn-small btn-accent" onclick="importData()">📥 导入恢复</button>
+                <button class="btn btn-small" style="background: rgba(255,107,157,0.15); color: var(--accent-light); border: 1px solid rgba(255,107,157,0.3);" onclick="clearAll()">清空全部</button>
             </div>
-            <div id="sceneFilter" style="margin-top: 16px; display: none;">
-                <div style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 8px;">📂 按场景筛选：</div>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="sceneTags"></div>
+            <div style="margin-top: 16px;">
+                <span style="font-size: 0.85rem; color: var(--text-secondary);">📂 按场景筛选:</span>
+                <div id="sceneFilters" style="margin-top: 8px;"></div>
             </div>
         </div>
 
+        <!-- Main Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('listen')">👂 听</button>
-            <button class="tab" onclick="switchTab('speak')">🗣️ 说</button>
-            <button class="tab" onclick="switchTab('use')">✍️ 用</button>
+            <button class="tab active" onclick="switchMainTab('listen')">👂 听</button>
+            <button class="tab" onclick="switchMainTab('speak')">🗣️ 说</button>
+            <button class="tab" onclick="switchMainTab('use')">✍️ 用</button>
         </div>
 
-        <div class="practice-area" id="practiceArea">
-            <div class="empty-state">
-                <div class="icon">📝</div>
-                <p>添加句子或单词开始练习吧</p>
+        <!-- Listen Panel -->
+        <div id="panel-listen" class="main-panel active">
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">👂</span>
+                    重复听 — 让耳朵熟悉每一个发音
+                </div>
+                <div id="listenList" class="sentence-list"></div>
+            </div>
+        </div>
+
+        <!-- Speak Panel -->
+        <div id="panel-speak" class="main-panel" style="display: none;">
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">🗣️</span>
+                    重复说 — 让嘴巴记住每一组发音
+                </div>
+                <div id="speakList" class="sentence-list"></div>
+            </div>
+        </div>
+
+        <!-- Use Panel -->
+        <div id="panel-use" class="main-panel" style="display: none;">
+            <!-- Use Sub Tabs -->
+            <div class="expand-tabs">
+                <button class="expand-tab active" onclick="switchUseTab('dictation')">️ 默写练习</button>
+                <button class="expand-tab" onclick="switchUseTab('expand')">🚀 拓展：模仿造句</button>
+            </div>
+
+            <!-- Dictation Content -->
+            <div id="use-dictation" class="expand-content active">
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">️</span>
+                        默写练习 — 让大脑内化每一个表达
+                    </div>
+                    <div id="dictationList" class="sentence-list"></div>
+                </div>
+            </div>
+
+            <!-- Expand Content -->
+            <div id="use-expand" class="expand-content">
+                <div class="card">
+                    <div class="expand-header">
+                        <div class="expand-title">
+                            <span>🚀</span>
+                            模仿造句练习
+                            <span class="expand-badge">拓展</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Select Example Sentence -->
+                    <div class="structure-display">
+                        <div class="structure-label"> 选择示例句子（点击切换）</div>
+                        <div id="exampleSelector" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+                            <!-- Dynamically generated -->
+                        </div>
+                        <div id="currentExample" style="font-size: 1.2rem; font-weight: 600; margin-bottom: 12px;"></div>
+                        <div id="currentExampleTranslation" style="color: var(--text-secondary); font-style: italic; font-size: 0.95rem;"></div>
+                    </div>
+
+                    <!-- Step 2: Word Bank -->
+                    <div class="word-bank">
+                        <div class="word-bank-title"> 词库 — 点击选词替换对应成分</div>
+                        
+                        <div class="word-group">
+                            <div class="word-group-label">
+                                <span class="legend-dot subject" style="display: inline-block;"></span>
+                                主语替换词
+                            </div>
+                            <div class="word-chips" id="subjectWords"></div>
+                        </div>
+
+                        <div class="word-group">
+                            <div class="word-group-label">
+                                <span class="legend-dot verb" style="display: inline-block;"></span>
+                                谓语替换词
+                            </div>
+                            <div class="word-chips" id="verbWords"></div>
+                        </div>
+
+                        <div class="word-group">
+                            <div class="word-group-label">
+                                <span class="legend-dot object" style="display: inline-block;"></span>
+                                宾语替换词
+                            </div>
+                            <div class="word-chips" id="objectWords"></div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Sentence Builder -->
+                    <div class="sentence-builder">
+                        <div class="builder-label">🔧 造句构建区</div>
+                        <div class="builder-area" id="builderArea">
+                            <span class="builder-placeholder">点击词库中的词语进行造句...</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Generated Sentence -->
+                    <div class="generated-sentence" id="generatedSentence" style="display: none;">
+                        <div class="generated-label">
+                            <span>✨</span>
+                            生成的新句子
+                        </div>
+                        <div class="generated-text" id="generatedText"></div>
+                        <div class="generated-translation" id="generatedTranslation"></div>
+                        <div class="action-area">
+                            <button class="action-btn" onclick="speakGenerated()">🔊 朗读</button>
+                            <button class="action-btn" onclick="startRecord()">🎤 跟读录音</button>
+                            <button class="action-btn" onclick="saveSentence()">💾 保存为新条目</button>
+                            <button class="action-btn" onclick="resetBuilder()">🔄 重新造句</button>
+                        </div>
+                        <div class="speaking-indicator" id="speakIndicator">
+                            <div class="sound-wave">
+                                <div class="sound-bar"></div>
+                                <div class="sound-bar"></div>
+                                <div class="sound-bar"></div>
+                                <div class="sound-bar"></div>
+                                <div class="sound-bar"></div>
+                            </div>
+                            <span style="color: var(--primary-light); font-size: 0.85rem;">正在播放...</span>
+                        </div>
+                        <div id="recordingResult"></div>
+                    </div>
+
+                    <!-- Score Display -->
+                    <div id="scoreDisplay" style="display: none;">
+                        <div class="score-display">
+                            <div class="score-circle" id="scoreCircle">0</div>
+                            <div class="score-label">造句完成度</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice History -->
+                <div class="card">
+                    <div class="card-title">
+                        <span class="icon">📊</span>
+                        造句练习记录
+                    </div>
+                    <div id="practiceHistory" style="color: var(--text-secondary);">
+                        <p>暂无记录，开始你的第一次造句练习吧！</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Celebration Container -->
     <div class="celebration" id="celebration"></div>
 
+    <!-- Hidden File Input -->
+    <input type="file" id="fileInput" style="display: none;" accept=".json" onchange="handleFileImport(event)">
+
     <script>
+        // Data Store
         let sentences = JSON.parse(localStorage.getItem('repeatSentences') || '[]');
-        let currentTab = 'listen';
-        let speechRate = 1;
-        window.currentSceneFilter = '';
+        let practiceHistory = JSON.parse(localStorage.getItem('practiceHistory') || '[]');
+        let currentMainTab = 'listen';
+        let currentUseTab = 'dictation';
+        let currentFilter = '全部';
+        let currentExampleIndex = 0;
+        let selectedWords = { subject: null, verb: null, object: null };
 
-        function saveData() {
-            localStorage.setItem('repeatSentences', JSON.stringify(sentences));
+        // Example Sentences for Expand Module
+        const exampleSentences = [
+            {
+                id: 1,
+                text: "I love reading books.",
+                translation: "我喜欢读书。",
+                structure: {
+                    subject: "I",
+                    verb: "love",
+                    object: "reading books"
+                },
+                subjectWords: ["I", "She", "He", "We", "They", "My brother", "The teacher", "Everyone"],
+                verbWords: ["love", "enjoy", "hate", "practice", "study", "need", "prefer", "avoid"],
+                objectWords: ["reading books", "playing music", "cooking dinner", "learning languages", "writing stories", "drawing pictures", "exercising daily", "traveling abroad"]
+            },
+            {
+                id: 2,
+                text: "The cat drinks milk.",
+                translation: "猫喝牛奶。",
+                structure: {
+                    subject: "The cat",
+                    verb: "drinks",
+                    object: "milk"
+                },
+                subjectWords: ["The cat", "The dog", "The bird", "The child", "My father", "The student", "The worker", "The baby"],
+                verbWords: ["drinks", "eats", "catches", "watches", "feeds", "finds", "buys", "sells"],
+                objectWords: ["milk", "water", "coffee", "tea", "juice", "soup", "rice", "bread"]
+            },
+            {
+                id: 3,
+                text: "She writes a letter.",
+                translation: "她写一封信。",
+                structure: {
+                    subject: "She",
+                    verb: "writes",
+                    object: "a letter"
+                },
+                subjectWords: ["She", "He", "I", "You", "We", "They", "The author", "The poet"],
+                verbWords: ["writes", "reads", "sends", "receives", "composes", "publishes", "drafts", "signs"],
+                objectWords: ["a letter", "an email", "a poem", "a novel", "a report", "a diary", "a message", "a card"]
+            },
+            {
+                id: 4,
+                text: "Students learn English.",
+                translation: "学生们学习英语。",
+                structure: {
+                    subject: "Students",
+                    verb: "learn",
+                    object: "English"
+                },
+                subjectWords: ["Students", "Children", "Teachers", "Scientists", "Artists", "Musicians", "Athletes", "Doctors"],
+                verbWords: ["learn", "teach", "study", "practice", "master", "understand", "explore", "discover"],
+                objectWords: ["English", "mathematics", "science", "history", "art", "music", "programming", "photography"]
+            },
+            {
+                id: 5,
+                text: "The sun rises in the east.",
+                translation: "太阳从东方升起。",
+                structure: {
+                    subject: "The sun",
+                    verb: "rises",
+                    object: "in the east"
+                },
+                subjectWords: ["The sun", "The moon", "The stars", "The wind", "The rain", "The snow", "The clouds", "The waves"],
+                verbWords: ["rises", "sets", "shines", "appears", "disappears", "moves", "flows", "falls"],
+                objectWords: ["in the east", "in the west", "at dawn", "at dusk", "in the sky", "in the ocean", "in the forest", "on the mountain"]
+            },
+            {
+                id: 6,
+                text: "I play basketball every day.",
+                translation: "我每天打篮球。",
+                structure: {
+                    subject: "I",
+                    verb: "play",
+                    object: "basketball every day"
+                },
+                subjectWords: ["I", "My sister", "Our team", "The coach", "The player", "The fans", "The captain", "The rookie"],
+                verbWords: ["play", "watch", "coach", "train", "analyze", "enjoy", "discuss", "promote"],
+                objectWords: ["basketball every day", "football every week", "tennis every month", "swimming every morning", "running every evening", "cycling every weekend", "yoga every night", "hiking every holiday"]
+            },
+            {
+                id: 7,
+                text: "The teacher explains the lesson.",
+                translation: "老师讲解课程。",
+                structure: {
+                    subject: "The teacher",
+                    verb: "explains",
+                    object: "the lesson"
+                },
+                subjectWords: ["The teacher", "The professor", "The tutor", "The mentor", "The guide", "The lecturer", "The instructor", "The advisor"],
+                verbWords: ["explains", "demonstrates", "illustrates", "summarizes", "reviews", "introduces", "clarifies", "simplifies"],
+                objectWords: ["the lesson", "the concept", "the theory", "the method", "the principle", "the formula", "the technique", "the strategy"]
+            },
+            {
+                id: 8,
+                text: "We celebrate birthdays together.",
+                translation: "我们一起庆祝生日。",
+                structure: {
+                    subject: "We",
+                    verb: "celebrate",
+                    object: "birthdays together"
+                },
+                subjectWords: ["We", "Our family", "The friends", "The community", "The neighbors", "The colleagues", "The classmates", "The team"],
+                verbWords: ["celebrate", "commemorate", "honor", "observe", "mark", "enjoy", "share", "remember"],
+                objectWords: ["birthdays together", "holidays annually", "festivals joyfully", "achievements proudly", "victories enthusiastically", "milestones meaningfully", "traditions faithfully", "memories fondly"]
+            },
+            {
+                id: 9,
+                text: "The chef prepares delicious food.",
+                translation: "厨师准备美味的食物。",
+                structure: {
+                    subject: "The chef",
+                    verb: "prepares",
+                    object: "delicious food"
+                },
+                subjectWords: ["The chef", "The cook", "The baker", "The barista", "The bartender", "The waiter", "The host", "The guest"],
+                verbWords: ["prepares", "cooks", "serves", "tastes", "smells", "orders", "shares", "enjoys"],
+                objectWords: ["delicious food", "fresh coffee", "cold drinks", "hot soup", "sweet dessert", "spicy sauce", "healthy salad", "organic juice"]
+            },
+            {
+                id: 10,
+                text: "People communicate through technology.",
+                translation: "人们通过科技进行交流。",
+                structure: {
+                    subject: "People",
+                    verb: "communicate",
+                    object: "through technology"
+                },
+                subjectWords: ["People", "Companies", "Governments", "Schools", "Hospitals", "Banks", "Stores", "Museums"],
+                verbWords: ["communicate", "connect", "interact", "collaborate", "cooperate", "negotiate", "coordinate", "exchange"],
+                objectWords: ["through technology", "via email", "by phone", "in person", "over internet", "through video", "with gestures", "by writing"]
+            }
+        ];
+
+        // Initialize
+        function init() {
             updateStats();
-            renderSceneFilter();
+            renderSceneFilters();
+            renderAllLists();
+            initExpandModule();
         }
 
+        // Stats
         function updateStats() {
-            document.getElementById('totalWords').textContent = sentences.length;
+            document.getElementById('statTotal').textContent = sentences.length;
             const totalR = sentences.reduce((sum, s) => sum + (s.repeatCount || 0), 0);
-            document.getElementById('totalRepeats').textContent = totalR;
-            const completedCount = sentences.filter(s => (s.repeatCount || 0) >= 5).length;
-            document.getElementById('completed').textContent = completedCount;
+            document.getElementById('statRepeats').textContent = totalR;
+            const mastered = sentences.filter(s => (s.repeatCount || 0) >= 5).length;
+            document.getElementById('statMastered').textContent = mastered;
         }
 
+        // Scene Filters
+        function renderSceneFilters() {
+            const scenes = ['全部'];
+            sentences.forEach(s => {
+                if (s.scene && !scenes.includes(s.scene)) {
+                    scenes.push(s.scene);
+                }
+            });
+
+            const container = document.getElementById('sceneFilters');
+            container.innerHTML = scenes.map(scene => `
+                <button class="scene-btn ${scene === currentFilter ? 'active' : ''}" 
+                        onclick="filterByScene('${scene}')">
+                    ${scene} (${scene === '全部' ? sentences.length : sentences.filter(s => s.scene === scene).length})
+                </button>
+            `).join('');
+        }
+
+        function filterByScene(scene) {
+            currentFilter = scene;
+            renderSceneFilters();
+            renderAllLists();
+        }
+
+        // Add Sentence
         function addSentence() {
-            const input = document.getElementById('sentenceInput');
-            const transInput = document.getElementById('translationInput');
-            const sceneSelect = document.getElementById('sceneSelect');
-            const text = input.value.trim();
-            if (!text) return;
+            const text = document.getElementById('sentenceInput').value.trim();
+            const translation = document.getElementById('translationInput').value.trim();
+            const scene = document.getElementById('sceneSelect').value;
+
+            if (!text) {
+                showToast('请输入句子或单词');
+                return;
+            }
 
             sentences.push({
                 id: Date.now(),
                 text: text,
-                translation: transInput.value.trim() || '',
-                scene: sceneSelect.value || '',
+                translation: translation || '',
+                scene: scene || '',
                 repeatCount: 0,
                 maxRepeats: 5
             });
 
-            input.value = '';
-            transInput.value = '';
-            sceneSelect.value = '';
+            document.getElementById('sentenceInput').value = '';
+            document.getElementById('translationInput').value = '';
+            document.getElementById('sceneSelect').value = '';
+
             saveData();
-            renderPractice();
+            renderAllLists();
+            showToast('添加成功！');
         }
 
-        function loadSample() {
+        // Load Samples
+        function loadSamples() {
             const samples = [
-                { text: "I'd like a table for two, please.", translation: "请给我安排一张两人桌。", scene: "点菜Scene" },
-                { text: "Could you recommend the signature dish?", translation: "能推荐一下招牌菜吗？", scene: "点菜Scene" },
-                { text: "Excuse me, how do I get to the nearest subway station?", translation: "请问最近的地铁站怎么走？", scene: "问路Scene" },
-                { text: "Let's grab a coffee sometime.", translation: "找个时间一起喝咖啡吧。", scene: "咖啡Scene" },
-                { text: "How's it going?", translation: "最近怎么样？", scene: "寒暄Scene" }
+                { text: "Practice makes perfect.", translation: "熟能生巧。", scene: "日常" },
+                { text: "Actions speak louder than words.", translation: "行动胜于言语。", scene: "日常" },
+                { text: "The early bird catches the worm.", translation: "早起的鸟儿有虫吃。", scene: "日常" },
+                { text: "I would like to schedule a meeting.", translation: "我想安排一次会议。", scene: "商务" },
+                { text: "Please find the attached document.", translation: "请查收附件。", scene: "商务" },
+                { text: "The research results are significant.", translation: "研究结果具有重要意义。", scene: "学术" },
+                { text: "Where is the nearest subway station?", translation: "最近的地铁站在哪里？", scene: "旅行" },
+                { text: "Can I have the menu, please?", translation: "请给我菜单好吗？", scene: "旅行" }
             ];
 
             samples.forEach(s => {
                 sentences.push({
-                    id: Date.now() + Math.random(),
+                    id: Date.now() + Math.random() * 1000,
                     text: s.text,
                     translation: s.translation,
                     scene: s.scene || '',
@@ -713,185 +1467,228 @@
             });
 
             saveData();
-            renderPractice();
+            renderAllLists();
+            showToast('已加载示例');
+        }
+
+        // Export/Import
+        function exportData() {
+            const data = {
+                sentences: sentences,
+                practiceHistory: practiceHistory,
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `repeat-power-backup-${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('导出成功！');
+        }
+
+        function importData() {
+            document.getElementById('fileInput').click();
+        }
+
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.sentences) {
+                        sentences = data.sentences;
+                    }
+                    if (data.practiceHistory) {
+                        practiceHistory = data.practiceHistory;
+                    }
+                    saveData();
+                    renderAllLists();
+                    showToast('导入成功！');
+                } catch (err) {
+                    showToast('导入失败：文件格式错误');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
         }
 
         function clearAll() {
-            if (confirm('确定要清空所有学习内容吗？')) {
+            if (confirm('确定要清空所有学习内容吗？此操作不可恢复。')) {
                 sentences = [];
+                practiceHistory = [];
                 saveData();
-                renderPractice();
+                renderAllLists();
+                showToast('已清空');
             }
         }
 
+        // Delete
         function deleteSentence(id) {
             sentences = sentences.filter(s => s.id !== id);
             saveData();
-            renderPractice();
+            renderAllLists();
         }
 
-        function switchTab(tab) {
-            currentTab = tab;
+        // Save Data
+        function saveData() {
+            localStorage.setItem('repeatSentences', JSON.stringify(sentences));
+            localStorage.setItem('practiceHistory', JSON.stringify(practiceHistory));
+            updateStats();
+            renderSceneFilters();
+        }
+
+        // Main Tab Switch
+        function switchMainTab(tab) {
+            currentMainTab = tab;
+            document.querySelectorAll('.main-panel').forEach(p => p.style.display = 'none');
+            document.getElementById(`panel-${tab}`).style.display = 'block';
             document.querySelectorAll('.tab').forEach((t, i) => {
                 const tabs = ['listen', 'speak', 'use'];
                 t.classList.toggle('active', tabs[i] === tab);
             });
-            renderPractice();
         }
 
-        function renderSceneFilter() {
-            const scenes = [...new Set(sentences.map(s => s.scene).filter(Boolean))];
-            const filterDiv = document.getElementById('sceneFilter');
-            const tagsDiv = document.getElementById('sceneTags');
-            
-            if (scenes.length === 0) {
-                filterDiv.style.display = 'none';
-                return;
-            }
-            
-            filterDiv.style.display = 'block';
-            tagsDiv.innerHTML = `
-                <button class="word-chip ${!window.currentSceneFilter ? 'selected' : ''}" 
-                        onclick="filterByScene('')">
-                    全部 (${sentences.length})
-                </button>
-            `;
-            
-            scenes.forEach(scene => {
-                const count = sentences.filter(s => s.scene === scene).length;
-                tagsDiv.innerHTML += `
-                    <button class="word-chip ${window.currentSceneFilter === scene ? 'selected' : ''}" 
-                            onclick="filterByScene('${scene}')">
-                        ${scene} (${count})
-                    </button>
-                `;
+        // Use Tab Switch
+        function switchUseTab(tab) {
+            currentUseTab = tab;
+            document.querySelectorAll('.expand-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`use-${tab}`).classList.add('active');
+            document.querySelectorAll('.expand-tab').forEach((t, i) => {
+                const tabs = ['dictation', 'expand'];
+                t.classList.toggle('active', tabs[i] === tab);
             });
         }
 
-        function filterByScene(scene) {
-            window.currentSceneFilter = scene;
-            renderSceneFilter();
-            renderPractice();
+        // Render Lists
+        function renderAllLists() {
+            renderListenList();
+            renderSpeakList();
+            renderDictationList();
         }
 
-        function renderPractice() {
-            const area = document.getElementById('practiceArea');
-            
-            const filteredSentences = window.currentSceneFilter 
-                ? sentences.filter(s => s.scene === window.currentSceneFilter)
-                : sentences;
+        function getFilteredSentences() {
+            if (currentFilter === '全部') return sentences;
+            return sentences.filter(s => s.scene === currentFilter);
+        }
 
-            if (filteredSentences.length === 0) {
-                area.innerHTML = `
+        function renderListenList() {
+            const container = document.getElementById('listenList');
+            const filtered = getFilteredSentences();
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
                     <div class="empty-state">
                         <div class="icon">📝</div>
-                        <p>${sentences.length === 0 ? '添加句子或单词开始练习吧' : '该场景下暂无内容'}</p>
+                        <p>添加句子或单词开始练习吧</p>
                     </div>
                 `;
                 return;
             }
 
-            let html = '';
-
-            if (currentTab === 'listen') {
-                html = `<div class="mode-visual">
-                    <div class="mode-emoji">👂</div>
-                    <div class="mode-text"><strong>重复听</strong> — 让耳朵熟悉每一个发音</div>
-                </div>`;
-                html += `<div class="speed-control">
-                    <label>语速:</label>
-                    <input type="range" class="speed-slider" id="speedSlider" min="0.3" max="2" step="0.1" value="${speechRate}" oninput="updateSpeed(this.value)">
-                    <span class="speed-value" id="speedValue">${speechRate}x</span>
-                </div>`;
-
-                filteredSentences.forEach((s) => {
-                    const dots = generateDots(s);
-                    html += `
-                        <div class="sentence-card">
-                            <button class="delete-btn" onclick="deleteSentence(${s.id})">✕</button>
-                            ${s.scene ? `<div class="scene-tag">📂 ${s.scene}</div>` : ''}
-                            <div class="sentence-text">${s.text}</div>
-                            ${s.translation ? `<div class="sentence-translation">${s.translation}</div>` : ''}
-                            <div class="progress-dots">${dots}</div>
-                            <div class="action-buttons">
-                                <button class="action-btn" onclick="speakText('${escapeHtml(s.text)}', ${s.id})">🔊 播放</button>
-                                <button class="action-btn" onclick="speakSlowly('${escapeHtml(s.text)}', ${s.id})">🐢 慢速</button>
-                                <button class="action-btn" onclick="repeatListen(${s.id})">🔁 重复3遍</button>
-                            </div>
-                            <div class="speaking-indicator" id="indicator-${s.id}">
-                                <div class="sound-wave">
-                                    <div class="sound-bar"></div>
-                                    <div class="sound-bar"></div>
-                                    <div class="sound-bar"></div>
-                                    <div class="sound-bar"></div>
-                                    <div class="sound-bar"></div>
-                                </div>
-                                <span style="color: var(--primary-light); font-size: 0.85rem; margin-left: 8px;">正在播放...</span>
-                            </div>
+            container.innerHTML = filtered.map(s => `
+                <div class="sentence-card">
+                    <button class="delete-btn" onclick="deleteSentence(${s.id})">✕</button>
+                    <div class="sentence-text">${s.text}</div>
+                    ${s.translation ? `<div class="sentence-translation">${s.translation}</div>` : ''}
+                    ${s.scene ? `<div class="sentence-scene">${s.scene}</div>` : ''}
+                    <div class="progress-dots">
+                        ${generateDots(s)}
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="speakText('${escapeHtml(s.text)}', ${s.id})">🔊 播放</button>
+                        <button class="action-btn" onclick="speakSlowly('${escapeHtml(s.text)}', ${s.id})">🐢 慢速</button>
+                        <button class="action-btn" onclick="repeatListen(${s.id})">🔁 重复3遍</button>
+                    </div>
+                    <div class="speaking-indicator" id="indicator-${s.id}">
+                        <div class="sound-wave">
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
                         </div>
-                    `;
-                });
-            } else if (currentTab === 'speak') {
-                html = `<div class="mode-visual">
-                    <div class="mode-emoji">🗣️</div>
-                    <div class="mode-text"><strong>重复说</strong> — 让嘴巴记住每一组发音</div>
-                </div>`;
+                        <span style="color: var(--primary-light); font-size: 0.85rem; margin-left: 8px;">正在播放...</span>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-                filteredSentences.forEach((s) => {
-                    const dots = generateDots(s);
-                    html += `
-                        <div class="sentence-card">
-                            <button class="delete-btn" onclick="deleteSentence(${s.id})">✕</button>
-                            ${s.scene ? `<div class="scene-tag">📂 ${s.scene}</div>` : ''}
-                            <div class="sentence-text">${s.text}</div>
-                            <div class="progress-dots">${dots}</div>
-                            <div class="action-buttons">
-                                <button class="action-btn" onclick="speakText('${escapeHtml(s.text)}', ${s.id})">🔊 先听一遍</button>
-                                <button class="action-btn" onclick="startRecognition(${s.id}, '${escapeHtml(s.text)}')">🎤 开始跟读</button>
-                            </div>
-                            <div class="speaking-indicator" id="indicator-${s.id}">
-                                <div class="sound-wave">
-                                    <div class="sound-bar"></div>
-                                    <div class="sound-bar"></div>
-                                    <div class="sound-bar"></div>
-                                    <div class="sound-bar"></div>
-                                    <div class="sound-bar"></div>
-                                </div>
-                                <span style="color: var(--primary-light); font-size: 0.85rem; margin-left: 8px;">正在聆听...</span>
-                            </div>
-                            <div id="result-${s.id}"></div>
-                        </div>
-                    `;
-                });
-            } else if (currentTab === 'use') {
-                html = `<div class="mode-visual">
-                    <div class="mode-emoji">✍️</div>
-                    <div class="mode-text"><strong>重复用</strong> — 让大脑内化每一个表达</div>
-                </div>`;
+        function renderSpeakList() {
+            const container = document.getElementById('speakList');
+            const filtered = getFilteredSentences();
 
-                filteredSentences.forEach((s) => {
-                    const dots = generateDots(s);
-                    html += `
-                        <div class="sentence-card">
-                            <button class="delete-btn" onclick="deleteSentence(${s.id})">✕</button>
-                            ${s.scene ? `<div class="scene-tag">📂 ${s.scene}</div>` : ''}
-                            <div class="sentence-text">${s.text}</div>
-                            ${s.translation ? `<div class="sentence-translation">${s.translation}</div>` : ''}
-                            <div class="progress-dots">${dots}</div>
-                            <input type="text" class="practice-input" id="input-${s.id}" placeholder="默写这句话..." onkeydown="if(event.key==='Enter') checkWriting(${s.id})" />
-                            <div class="action-buttons" style="margin-top: 10px;">
-                                <button class="action-btn" onclick="checkWriting(${s.id})">✅ 检查</button>
-                                <button class="action-btn" onclick="showHint(${s.id}, '${escapeHtml(s.text)}')">💡 提示</button>
-                                <button class="action-btn" onclick="markUseDone(${s.id})">🎯 标记为已练习</button>
-                            </div>
-                            <div id="result-${s.id}"></div>
-                        </div>
-                    `;
-                });
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🎤</div>
+                        <p>添加内容后开始跟读练习</p>
+                    </div>
+                `;
+                return;
             }
 
-            area.innerHTML = html;
-            updateStats();
+            container.innerHTML = filtered.map(s => `
+                <div class="sentence-card">
+                    <button class="delete-btn" onclick="deleteSentence(${s.id})">✕</button>
+                    <div class="sentence-text">${s.text}</div>
+                    <div class="progress-dots">
+                        ${generateDots(s)}
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="speakText('${escapeHtml(s.text)}', ${s.id})"> 先听一遍</button>
+                        <button class="action-btn" onclick="startRecognition(${s.id}, '${escapeHtml(s.text)}')">🎤 开始跟读</button>
+                    </div>
+                    <div class="speaking-indicator" id="indicator-${s.id}">
+                        <div class="sound-wave">
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                            <div class="sound-bar"></div>
+                        </div>
+                        <span style="color: var(--primary-light); font-size: 0.85rem; margin-left: 8px;">正在聆听...</span>
+                    </div>
+                    <div id="result-${s.id}"></div>
+                </div>
+            `).join('');
+        }
+
+        function renderDictationList() {
+            const container = document.getElementById('dictationList');
+            const filtered = getFilteredSentences();
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">✍️</div>
+                        <p>添加内容后开始默写练习</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(s => `
+                <div class="sentence-card">
+                    <button class="delete-btn" onclick="deleteSentence(${s.id})">✕</button>
+                    <div class="sentence-text">${s.text}</div>
+                    ${s.translation ? `<div class="sentence-translation">${s.translation}</div>` : ''}
+                    <div class="progress-dots">
+                        ${generateDots(s)}
+                    </div>
+                    <input type="text" class="practice-input" id="input-${s.id}" placeholder="默写这句话..." onkeydown="if(event.key==='Enter') checkWriting(${s.id})" />
+                    <div class="action-buttons">
+                        <button class="action-btn" onclick="checkWriting(${s.id})">✅ 检查</button>
+                        <button class="action-btn" onclick="showHint(${s.id}, '${escapeHtml(s.text)}')">💡 提示</button>
+                        <button class="action-btn" onclick="markUseDone(${s.id})">🎯 标记为已练习</button>
+                    </div>
+                    <div id="result-${s.id}"></div>
+                </div>
+            `).join('');
         }
 
         function generateDots(s) {
@@ -910,23 +1707,14 @@
             return dotsHtml;
         }
 
-        function escapeHtml(text) {
-            return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
-        }
-
-        function updateSpeed(val) {
-            speechRate = parseFloat(val);
-            document.getElementById('speedValue').textContent = val + 'x';
-        }
-
+        // Speech Functions
         function speakText(text, id) {
             const indicator = document.getElementById('indicator-' + id);
             if (indicator) indicator.classList.add('active');
 
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = detectLang(text);
-            utterance.rate = speechRate;
-            utterance.pitch = 1;
+            utterance.rate = 1;
 
             utterance.onend = () => {
                 if (indicator) indicator.classList.remove('active');
@@ -937,9 +1725,17 @@
         }
 
         function speakSlowly(text, id) {
+            const indicator = document.getElementById('indicator-' + id);
+            if (indicator) indicator.classList.add('active');
+
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = detectLang(text);
             utterance.rate = 0.5;
+
+            utterance.onend = () => {
+                if (indicator) indicator.classList.remove('active');
+            };
+
             window.speechSynthesis.cancel();
             window.speechSynthesis.speak(utterance);
         }
@@ -947,6 +1743,7 @@
         function repeatListen(id) {
             const sentence = sentences.find(s => s.id === id);
             if (!sentence) return;
+
             let count = 0;
             const interval = setInterval(() => {
                 if (count >= 3) {
@@ -963,7 +1760,7 @@
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
                 showResult(id, `<div class="result-box">
-                    <div class="label">⚠️ 提示</div>
+                    <div class="result-label">️ 提示</div>
                     <p style="color: var(--text-secondary);">您的浏览器不支持语音识别，请使用 Chrome 浏览器。</p>
                 </div>`);
                 return;
@@ -1000,8 +1797,8 @@
                 }
 
                 showResult(id, `
-                    <div class="result-box" style="${passed ? '' : 'border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.1);'}">
-                        <div class="label" style="color: ${passed ? 'var(--success)' : '#ff6b6b'}">${passed ? '✅ 发音优秀！' : '💪 继续加油！'}</div>
+                    <div class="result-box ${passed ? '' : 'error'}">
+                        <div class="result-label">${passed ? '✅ 发音优秀！' : '💪 继续加油！'}</div>
                         <div class="match">你说的: "${bestMatch}"</div>
                         <div class="accuracy">匹配度: ${accuracy}% | 目标: "${targetText}"</div>
                     </div>
@@ -1011,8 +1808,8 @@
             recognition.onerror = (event) => {
                 if (indicator) indicator.classList.remove('active');
                 if (event.error === 'no-speech') {
-                    showResult(id, `<div class="result-box">
-                        <div class="label">⚠️ 未检测到语音</div>
+                    showResult(id, `<div class="result-box error">
+                        <div class="result-label">⚠️ 未检测到语音</div>
                         <p style="color: var(--text-secondary);">请再试一次，大声朗读。</p>
                     </div>`);
                 }
@@ -1058,8 +1855,8 @@
             }
 
             showResult(id, `
-                <div class="result-box" style="${passed ? '' : 'border-color: rgba(255,107,107,0.3); background: rgba(255,107,107,0.1);'}">
-                    <div class="label" style="color: ${passed ? 'var(--success)' : '#ff6b6b'}">${passed ? '✅ 默写正确！' : '❌ 再想想...'}</div>
+                <div class="result-box ${passed ? '' : 'error'}">
+                    <div class="result-label">${passed ? '✅ 默写正确！' : '❌ 再想想...'}</div>
                     <div class="accuracy">正确率: ${accuracy}%</div>
                     <div style="margin-top: 8px; color: var(--text-secondary); font-size: 0.9rem;">正确答案: ${sentence.text}</div>
                 </div>
@@ -1073,7 +1870,7 @@
             const hintWords = words.map((w, i) => i % 2 === 0 ? w : '___').join(' ');
             showResult(id, `
                 <div class="result-box">
-                    <div class="label">💡 提示</div>
+                    <div class="result-label">💡 提示</div>
                     <div class="match" style="font-size: 1rem;">${hintWords}</div>
                 </div>
             `);
@@ -1085,7 +1882,7 @@
             if (input) input.value = '';
             showResult(id, `
                 <div class="result-box">
-                    <div class="label">🎯 已标记为练习完成</div>
+                    <div class="result-label">🎯 已标记为练习完成</div>
                 </div>
             `);
         }
@@ -1110,7 +1907,293 @@
             }
 
             saveData();
-            renderPractice();
+            renderAllLists();
+        }
+
+        // Expand Module Functions
+        function initExpandModule() {
+            renderExampleSelector();
+            renderWordBank();
+        }
+
+        function renderExampleSelector() {
+            const container = document.getElementById('exampleSelector');
+            container.innerHTML = exampleSentences.map((s, i) => `
+                <button class="action-btn ${i === currentExampleIndex ? 'active' : ''}" 
+                        onclick="selectExample(${i})"
+                        style="${i === currentExampleIndex ? 'background: var(--primary); border-color: var(--primary); color: white;' : ''}">
+                    句子 ${i + 1}
+                </button>
+            `).join('');
+
+            updateCurrentExample();
+        }
+
+        function selectExample(index) {
+            currentExampleIndex = index;
+            selectedWords = { subject: null, verb: null, object: null };
+            renderExampleSelector();
+            renderWordBank();
+            resetBuilder();
+            document.getElementById('generatedSentence').style.display = 'none';
+            document.getElementById('scoreDisplay').style.display = 'none';
+        }
+
+        function updateCurrentExample() {
+            const example = exampleSentences[currentExampleIndex];
+            document.getElementById('currentExample').innerHTML = `
+                <span class="word-highlight word-subject">${example.structure.subject}</span>
+                <span class="word-highlight word-verb">${example.structure.verb}</span>
+                <span class="word-highlight word-object">${example.structure.object}</span>
+            `;
+            document.getElementById('currentExampleTranslation').textContent = example.translation;
+        }
+
+        function renderWordBank() {
+            const example = exampleSentences[currentExampleIndex];
+
+            document.getElementById('subjectWords').innerHTML = example.subjectWords.map(word => `
+                <div class="word-chip subject-chip ${selectedWords.subject === word ? 'selected' : ''}" 
+                     onclick="selectWord('subject', '${escapeHtml(word)}')">${word}</div>
+            `).join('');
+
+            document.getElementById('verbWords').innerHTML = example.verbWords.map(word => `
+                <div class="word-chip verb-chip ${selectedWords.verb === word ? 'selected' : ''}" 
+                     onclick="selectWord('verb', '${escapeHtml(word)}')">${word}</div>
+            `).join('');
+
+            document.getElementById('objectWords').innerHTML = example.objectWords.map(word => `
+                <div class="word-chip object-chip ${selectedWords.object === word ? 'selected' : ''}" 
+                     onclick="selectWord('object', '${escapeHtml(word)}')">${word}</div>
+            `).join('');
+        }
+
+        function selectWord(type, word) {
+            if (selectedWords[type] === word) {
+                selectedWords[type] = null;
+            } else {
+                selectedWords[type] = word;
+            }
+
+            renderWordBank();
+            updateBuilder();
+        }
+
+        function updateBuilder() {
+            const builder = document.getElementById('builderArea');
+            const hasContent = selectedWords.subject || selectedWords.verb || selectedWords.object;
+
+            if (!hasContent) {
+                builder.innerHTML = '<span class="builder-placeholder">点击词库中的词语进行造句...</span>';
+                builder.classList.remove('has-content');
+                return;
+            }
+
+            builder.classList.add('has-content');
+            let html = '';
+
+            if (selectedWords.subject) {
+                html += `<span class="builder-slot subject">${selectedWords.subject}</span>`;
+            } else {
+                html += `<span class="builder-slot" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">?</span>`;
+            }
+
+            if (selectedWords.verb) {
+                html += `<span class="builder-connector">→</span><span class="builder-slot verb">${selectedWords.verb}</span>`;
+            } else if (selectedWords.subject) {
+                html += `<span class="builder-connector">→</span><span class="builder-slot" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">?</span>`;
+            }
+
+            if (selectedWords.object) {
+                html += `<span class="builder-connector">→</span><span class="builder-slot object">${selectedWords.object}</span>`;
+            } else if (selectedWords.verb) {
+                html += `<span class="builder-connector">→</span><span class="builder-slot" style="background: rgba(255,255,255,0.05); color: var(--text-secondary);">?</span>`;
+            }
+
+            builder.innerHTML = html;
+
+            // Check if complete
+            if (selectedWords.subject && selectedWords.verb && selectedWords.object) {
+                generateSentence();
+            }
+        }
+
+        function generateSentence() {
+            const example = exampleSentences[currentExampleIndex];
+            const newSentence = `${selectedWords.subject} ${selectedWords.verb} ${selectedWords.object}.`;
+
+            document.getElementById('generatedText').textContent = newSentence;
+            document.getElementById('generatedTranslation').textContent = `模仿自：${example.text} → ${selectedWords.subject} ${selectedWords.verb} ${selectedWords.object}.`;
+            document.getElementById('generatedSentence').style.display = 'block';
+
+            // Calculate score
+            const score = calculateSentenceScore(newSentence);
+            document.getElementById('scoreCircle').textContent = score;
+            document.getElementById('scoreDisplay').style.display = 'block';
+
+            // Save to history
+            savePracticeRecord(newSentence);
+        }
+
+        function calculateSentenceScore(sentence) {
+            let score = 0;
+            // Has all three components
+            if (selectedWords.subject && selectedWords.verb && selectedWords.object) score += 40;
+            // Grammar check (simple)
+            const words = sentence.split(' ');
+            if (words.length >= 3) score += 30;
+            // Creativity bonus
+            const example = exampleSentences[currentExampleIndex];
+            const isOriginal = selectedWords.subject !== example.structure.subject ||
+                               selectedWords.verb !== example.structure.verb ||
+                               selectedWords.object !== example.structure.object;
+            if (isOriginal) score += 30;
+
+            return Math.min(score, 100);
+        }
+
+        function savePracticeRecord(sentence) {
+            const record = {
+                id: Date.now(),
+                exampleId: exampleSentences[currentExampleIndex].id,
+                originalSentence: exampleSentences[currentExampleIndex].text,
+                newSentence: sentence,
+                timestamp: new Date().toISOString(),
+                score: calculateSentenceScore(sentence)
+            };
+
+            practiceHistory.push(record);
+            saveData();
+            renderPracticeHistory();
+        }
+
+        function renderPracticeHistory() {
+            const container = document.getElementById('practiceHistory');
+            if (practiceHistory.length === 0) {
+                container.innerHTML = '<p>暂无记录，开始你的第一次造句练习吧！</p>';
+                return;
+            }
+
+            const recent = practiceHistory.slice(-5).reverse();
+            container.innerHTML = recent.map(record => {
+                const date = new Date(record.timestamp);
+                const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+                return `
+                    <div style="padding: 12px; background: var(--bg-input); border-radius: 10px; margin-bottom: 8px; border-left: 3px solid var(--primary);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-size: 0.8rem; color: var(--text-secondary);">${dateStr}</span>
+                            <span style="font-size: 0.85rem; color: var(--primary-light);">得分: ${record.score}/100</span>
+                        </div>
+                        <div style="font-size: 0.95rem; font-weight: 600;">${record.newSentence}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">模仿: ${record.originalSentence}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function speakGenerated() {
+            const text = document.getElementById('generatedText').textContent;
+            const indicator = document.getElementById('speakIndicator');
+            if (indicator) indicator.classList.add('active');
+
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = detectLang(text);
+            utterance.rate = 1;
+
+            utterance.onend = () => {
+                if (indicator) indicator.classList.remove('active');
+            };
+
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function startRecord() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                document.getElementById('recordingResult').innerHTML = `
+                    <div class="result-box error" style="margin-top: 16px;">
+                        <div class="result-label">⚠️ 浏览器不支持语音识别</div>
+                        <p style="color: var(--text-secondary);">请使用 Chrome 浏览器。</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const indicator = document.getElementById('speakIndicator');
+            if (indicator) indicator.classList.add('active');
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+
+            recognition.onresult = (event) => {
+                if (indicator) indicator.classList.remove('active');
+                const transcript = event.results[0][0].transcript;
+                const target = document.getElementById('generatedText').textContent;
+                const accuracy = Math.round(calculateSimilarity(target.toLowerCase(), transcript.toLowerCase()) * 100);
+
+                document.getElementById('recordingResult').innerHTML = `
+                    <div class="result-box ${accuracy >= 70 ? '' : 'error'}" style="margin-top: 16px;">
+                        <div class="result-label">${accuracy >= 70 ? '✅ 跟读成功！' : '💪 继续练习！'}</div>
+                        <div>识别结果: "${transcript}"</div>
+                        <div class="accuracy">匹配度: ${accuracy}%</div>
+                    </div>
+                `;
+            };
+
+            recognition.onerror = () => {
+                if (indicator) indicator.classList.remove('active');
+                document.getElementById('recordingResult').innerHTML = `
+                    <div class="result-box error" style="margin-top: 16px;">
+                        <div class="result-label">⚠️ 识别失败</div>
+                        <p style="color: var(--text-secondary);">请确保麦克风权限已开启。</p>
+                    </div>
+                `;
+            };
+
+            recognition.start();
+        }
+
+        function saveSentence() {
+            const text = document.getElementById('generatedText').textContent;
+            if (!text) return;
+
+            sentences.push({
+                id: Date.now(),
+                text: text,
+                translation: document.getElementById('generatedTranslation').textContent,
+                scene: '拓展造句',
+                repeatCount: 0,
+                maxRepeats: 5
+            });
+
+            saveData();
+            renderAllLists();
+            showToast('新句子已保存！');
+            triggerCelebration();
+        }
+
+        function resetBuilder() {
+            selectedWords = { subject: null, verb: null, object: null };
+            renderWordBank();
+            updateBuilder();
+            document.getElementById('generatedSentence').style.display = 'none';
+            document.getElementById('scoreDisplay').style.display = 'none';
+            document.getElementById('recordingResult').innerHTML = '';
+        }
+
+        // Utility Functions
+        function detectLang(text) {
+            const hasChinese = /[\u4e00-\u9fff]/.test(text);
+            if (hasChinese) return 'zh-CN';
+            const hasJapanese = /[\u3040-\u309f\u30a0-\u30ff]/.test(text);
+            if (hasJapanese) return 'ja-JP';
+            return 'en-US';
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
         }
 
         function triggerCelebration() {
@@ -1130,89 +2213,43 @@
             }
         }
 
-        function detectLang(text) {
-            const hasChinese = /[\u4e00-\u9fff]/.test(text);
-            if (hasChinese) return 'zh-CN';
-            const hasJapanese = /[\u3040-\u309f\u30a0-\u30ff]/.test(text);
-            if (hasJapanese) return 'ja-JP';
-            return 'en-US';
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--bg-card);
+                color: var(--text);
+                padding: 12px 24px;
+                border-radius: 12px;
+                border: 1px solid var(--border);
+                font-size: 0.95rem;
+                z-index: 1000;
+                animation: slideUp 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
         }
 
-        function exportData() {
-            if (sentences.length === 0) {
-                alert('当前没有学习内容，无法导出！');
-                return;
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && document.activeElement.id === 'sentenceInput') {
+                addSentence();
             }
-            const dataStr = JSON.stringify(sentences, null, 2);
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            const date = new Date().toISOString().slice(0, 10);
-            a.download = `重复的力量_语料备份_${date}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        function importData() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json,application/json';
-            input.style.display = 'none';
-            
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    try {
-                        const imported = JSON.parse(event.target.result);
-                        if (!Array.isArray(imported)) throw new Error('格式不是数组');
-                        
-                        const isValid = imported.every(item => item.text && typeof item.id === 'number');
-                        if (!isValid) throw new Error('数据结构不匹配');
-
-                        if (confirm(`检测到 ${imported.length} 条语料。\n点击【确定】覆盖当前数据\n点击【取消】追加到现有列表`)) {
-                            sentences = imported;
-                        } else {
-                            const existingIds = new Set(sentences.map(s => s.id));
-                            const newItems = imported.filter(item => !existingIds.has(item.id));
-                            sentences = sentences.concat(newItems);
-                        }
-                        
-                        saveData();
-                        renderPractice();
-                        alert(`✅ 成功导入 ${imported.length} 条语料！`);
-                    } catch (err) {
-                        alert('❌ 导入失败：文件格式不正确或已损坏。\n' + err.message);
-                    }
-                };
-                reader.readAsText(file);
-            };
-            
-            document.body.appendChild(input);
-            input.click();
-            document.body.removeChild(input);
-        }
-
-        document.getElementById('sentenceInput').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') addSentence();
         });
 
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                    .then(reg => console.log('✅ PWA 引擎已启动:', reg.scope))
-                    .catch(err => console.warn('⚠️ SW 注册失败:', err));
-            });
-        }
-
-        updateStats();
-        renderSceneFilter();
-        renderPractice();
+        // Init
+        init();
+        renderPracticeHistory();
     </script>
 </body>
 </html>
+
